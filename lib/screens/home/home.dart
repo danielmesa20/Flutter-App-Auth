@@ -1,7 +1,7 @@
 import 'package:brew_crew/services/auth.dart';
+import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
 
@@ -12,20 +12,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   final AuthService _auth = AuthService();
-
   bool loading = false;
  
-   void toastMessage(String text) {
-    Fluttertoast.showToast(
-        msg: text,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-  }
-
   @override
   Widget build(BuildContext context) {
     return

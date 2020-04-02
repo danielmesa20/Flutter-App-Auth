@@ -1,5 +1,6 @@
 import 'package:brew_crew/screens/authenticate/register.dart';
 import 'package:brew_crew/screens/authenticate/sign_in.dart';
+import 'package:brew_crew/screens/authenticate/sign_in_email.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
@@ -9,18 +10,20 @@ class Authenticate extends StatefulWidget {
 
 class _AuthenticateState extends State<Authenticate> {
 
-  bool showSignIn = true;
+  int showSignIn = 0;
 
-  void toggleView(){
+  void toggleView(int value){
     setState(() {
-      showSignIn = !showSignIn;
+      showSignIn = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if(showSignIn){
+    if(showSignIn == 0){
       return SignIn(toggleView: toggleView);
+    }else if(showSignIn == 1){
+      return SignInWithEmail(toggleView: toggleView);
     }else{
       return Register(toggleView: toggleView);
     }

@@ -24,7 +24,7 @@ class AuthService {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
-  // Sign in anon  (option = 0)
+  // Sign in anon  
   Future sigInAnon() async { 
     try {
       final AuthResult result = await _auth.signInAnonymously();
@@ -39,8 +39,8 @@ class AuthService {
   // Register with email & password
   Future registerWithEmailAndPassword(String email, String password) async {
     try{
-      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      FirebaseUser user = result.user;
+      final AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      final FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     }catch(e){
       print('Error Register with email and password : ${e.message.toString()}');
@@ -48,7 +48,7 @@ class AuthService {
     } 
   }
 
-  // Sign in with email & password  (option = 1)
+  // Sign in with email & password  
   Future signInWithEmailAndPassword(String email, String password) async {
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -60,7 +60,7 @@ class AuthService {
     } 
   }
 
-  //Sign in with Google  (option = 2)
+  //Sign in with Google  
   Future signInWithGoogle() async {
     try{
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -70,7 +70,6 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
       final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-      print("${user.displayName}, ${user.photoUrl}");
       return _userFromFirebaseUser(user);
     }catch(e){
       print('Error SignIn with Google: ${e.message.toString()}');
@@ -78,13 +77,12 @@ class AuthService {
     }
   }
 
-  //Sign in with Facebook  (option = 3)
+  //Sign in with Facebook  
   Future signInWithFacebook() async {
     try{
       final FacebookLoginResult result = await _facebookSignIn.logIn(['email']);
       final AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: result.accessToken.token);
       final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-      print(user.displayName);
       return _userFromFirebaseUser(user);
     }catch(e){
       print('Error SignIn with Facebook: ${e.message.toString()}');

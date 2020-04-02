@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 class SignIn extends StatefulWidget {
-  
   final Function toggleView;
   SignIn({this.toggleView});
 
@@ -14,7 +13,6 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -25,73 +23,71 @@ class _SignInState extends State<SignIn> {
         ? Loading()
         : Scaffold(
             backgroundColor: Colors.brown[100],
-            appBar: AppBar(
-              backgroundColor: Colors.brown[400],
-              elevation: 0.0,
-              title: Text("Brew Crew"),
-              centerTitle: true,
-            ),
             body: Center(
-              heightFactor: 1.75,
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                   child: Form(
                       key: _formKey,
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            Center(
-                              child: Text(
-                                "SIGN IN",
-                                style: TextStyle(
-                                  fontSize: 30.0,
-                                ),
+                            Text(
+                              "SIGN IN",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 50.0,
+                                fontFamily: 'Prima',
+                                letterSpacing: 1.5,
                               ),
                             ),
                             SizedBox(height: 20.0),
-                            RaisedButton(
-                                color: Colors.pink,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(8.0),
-                                ),
-                                child: Text(
-                                  "Sign in with email and password",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onPressed: () {
-                                  widget.toggleView(1);
-                                }),
-                            SizedBox(height: 10.0),
                             GoogleSignInButton(
                               darkMode: false, // default: false
                               borderRadius: 8.0,
                               textStyle: TextStyle(fontSize: 15),
-                              text: "Sign in with Google",
+                              text: "Sign in with Google",                            
                               onPressed: () async {
-                                setState(() => loading = true); 
+                                setState(() => loading = true);
                                 dynamic result = await _auth.signInWithGoogle();
                                 if (result == null) {
-                                  toastMessage('There was a problem trying to login with Google');
-                                  setState(() => loading = false);   
+                                  toastMessage(
+                                      'There was a problem trying to login with Google');
+                                  setState(() => loading = false);
                                 }
                               },
                             ),
                             SizedBox(height: 10.0),
                             FacebookSignInButton(
-                                borderRadius: 8.0,
-                                text: 'Sign in with Facebook',
-                                textStyle:
-                                    TextStyle(fontSize: 15, color: Colors.white),
-                                onPressed: () async {
-                                  setState(() => loading = true); 
-                                  dynamic result = await _auth.signInWithFacebook();
-                                  if (result == null) {
-                                    toastMessage('There was a problem trying to login with Facebook');
-                                    setState(() => loading = false); 
-                                  }
-                                }),
+                              borderRadius: 8.0,
+                              text: 'Sign in with Facebook',
+                              textStyle:
+                                  TextStyle(fontSize: 15, color: Colors.white),
+                              onPressed: () async {
+                                setState(() => loading = true);
+                                dynamic result =
+                                    await _auth.signInWithFacebook();
+                                if (result == null) {
+                                  toastMessage(
+                                      'There was a problem trying to login with Facebook');
+                                  setState(() => loading = false);
+                                }
+                              },
+                            ),
+                            SizedBox(height: 20.0),
+                            RaisedButton(
+                              color: Colors.pink,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(8.0),
+                              ),
+                              child: Text(
+                                "Sign in with email and password",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () =>widget.toggleView(1),
+                            ),
                             SizedBox(height: 10.0),
                             FlatButton.icon(
                               shape: RoundedRectangleBorder(
@@ -101,15 +97,15 @@ class _SignInState extends State<SignIn> {
                               color: Colors.white,
                               label: Text("Sign in Anonymous"),
                               onPressed: () async {
-                                setState(() => loading = true); 
+                                setState(() => loading = true);
                                 dynamic result = await _auth.sigInAnon();
                                 if (result == null) {
-                                  toastMessage('There was a problem trying to login');
-                                  setState(() => loading = false); 
+                                  toastMessage(
+                                      'There was a problem trying to login');
+                                  setState(() => loading = false);
                                 }
                               },
                             ),
-                            SizedBox(height: 20.0),
                           ],
                         ),
                       )),

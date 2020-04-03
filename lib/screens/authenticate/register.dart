@@ -17,6 +17,7 @@ class _RegisterState extends State<Register> {
   //Variables
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final focus = FocusNode();
   bool loading = false;
   String email = '';
   String password = '';
@@ -49,24 +50,30 @@ class _RegisterState extends State<Register> {
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.emailAddress,                
+                            textAlignVertical: TextAlignVertical.bottom, 
+                            textInputAction: TextInputAction.next, 
+                            enableSuggestions: true,  
                             decoration:
-                                textInputDecoration.copyWith(hintText: 'Email'),
+                                textInputDecoration.copyWith(hintText: 'Enter Your Email Here', prefixIcon: Icon(Icons.alternate_email, color: Colors.black,)),
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter an email';
-                              } else if (!val.contains('@')) {
+                              } else if (!validateEmail(val)) {
                                 return 'Enter an valid email';
                               } else {
                                 return null;
                               }
                             },
                             onChanged: (val) => setState(() => email = val),
+                            onFieldSubmitted: (v) => FocusScope.of(context).requestFocus(focus),
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            decoration: textInputDecoration.copyWith(
-                                hintText: 'Password'),
+                            enableSuggestions: true,
+                            textAlignVertical: TextAlignVertical.bottom,  
+                            focusNode: focus,                
+                            decoration: textInputDecoration.copyWith(hintText: 'Enter Your Password Here', prefixIcon: Icon(Icons.security, color: Colors.black,)),
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter a password';
@@ -82,6 +89,7 @@ class _RegisterState extends State<Register> {
                           SizedBox(height: 20.0),
                           RaisedButton(
                             color: Colors.pink,
+                            elevation: 0.0,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
                             ),
@@ -105,6 +113,7 @@ class _RegisterState extends State<Register> {
                           ),
                           SizedBox(height: 5.0),
                           RaisedButton(
+                            elevation: 0.0,
                             color: Colors.blue,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
@@ -117,6 +126,7 @@ class _RegisterState extends State<Register> {
                           ),
                           SizedBox(height: 5.0),
                           RaisedButton(
+                            elevation: 0.0,
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),

@@ -78,6 +78,7 @@ class _SignInState extends State<SignIn> {
                             SizedBox(height: 10.0),
                             RaisedButton(
                               color: Colors.pink,
+                              elevation: 0.0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: new BorderRadius.circular(8.0),
                               ),

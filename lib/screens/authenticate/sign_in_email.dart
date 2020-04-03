@@ -12,17 +12,16 @@ class SignInWithEmail extends StatefulWidget {
 }
 
 class _SignInWithEmailState extends State<SignInWithEmail> {
-
   //Variables
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  final focus = FocusNode();
   bool loading = false;
   String email = '';
   String password = '';
 
   @override
   Widget build(BuildContext context) {
-  
     return loading
         ? Loading()
         : Scaffold(
@@ -32,14 +31,15 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
               heightFactor: 2.0,
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          SizedBox(height: 20.0), 
+                          SizedBox(height: 20.0),
                           Text(
                             "SIGN IN WITH EMAIL",
                             textAlign: TextAlign.center,
@@ -51,26 +51,37 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            enableSuggestions: true,                         
+                            enableSuggestions: true,
                             keyboardType: TextInputType.emailAddress,
-                            decoration:
-                                textInputDecoration.copyWith(hintText: 'Email'),
+                            textAlignVertical: TextAlignVertical.bottom,
+                            textInputAction: TextInputAction.next,
+                            decoration: textInputDecoration.copyWith(
+                                hintText: 'Enter Your Email Here',
+                                prefixIcon: Icon(Icons.alternate_email,
+                                    color: Colors.black)),
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter an email';
-                              } else if (!val.contains('@')) {
+                              } else if (!validateEmail(val)) {
                                 return 'Enter an valid email';
                               } else {
                                 return null;
                               }
                             },
                             onChanged: (val) => setState(() => email = val),
+                            onFieldSubmitted: (v) => FocusScope.of(context).requestFocus(focus),
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            enableSuggestions: true,        
+                            enableSuggestions: true,
+                            focusNode: focus,
+                            textAlignVertical: TextAlignVertical.bottom,
                             decoration: textInputDecoration.copyWith(
-                                hintText: 'Password'),
+                                hintText: 'Enter Your Password Here',
+                                prefixIcon: Icon(
+                                  Icons.security,
+                                  color: Colors.black,
+                                )),
                             obscureText: true,
                             validator: (val) {
                               if (val.isEmpty) {
@@ -84,8 +95,9 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           SizedBox(height: 20.0),
                           RaisedButton(
                             color: Colors.pink,
+                            elevation: 0.0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
                             child: Text(
                               "Enter",
@@ -107,6 +119,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           ),
                           RaisedButton(
                             color: Colors.blue,
+                            elevation: 0.0,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
                             ),
@@ -118,6 +131,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           ),
                           RaisedButton(
                             color: Colors.grey,
+                            elevation: 0.0,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
                             ),
@@ -126,9 +140,9 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () async {
-                              if(email.isEmpty){
+                              if (email.isEmpty) {
                                 toastMessage('Please supply your email');
-                              }else{
+                              } else {
                                 setState(() => loading = true);
                                 await _auth.resetPassword(email);
                                 setState(() => loading = false);
@@ -138,6 +152,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           ),
                           RaisedButton(
                             color: Colors.white,
+                            elevation: 0.0,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
                             ),

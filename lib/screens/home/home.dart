@@ -24,11 +24,9 @@ class _HomeState extends State<Home> {
               elevation: 0.0,
               centerTitle: true,
               actions: <Widget>[
-                FlatButton.icon(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                  ),
-                  label: Text("logout"),
+                IconButton(
+                  icon: Icon(Icons.exit_to_app),
+                  tooltip: 'Increase volume by 10',
                   onPressed: () async {
                     setState(() => loading = true);
                     dynamic result = await _auth.signOut();

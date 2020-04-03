@@ -5,10 +5,10 @@ const textInputDecoration = InputDecoration(
   fillColor: Colors.white,
   filled: true,
   enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.white, width: 2.0),
+    borderSide: BorderSide(color: Colors.grey, width: 1.0),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Colors.pink, width: 2.0),
+    borderSide: BorderSide(color: Colors.pink, width: 1.0),
   ),
 );
 
@@ -19,7 +19,7 @@ void toastMessage(String text) {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.brown[300],
         textColor: Colors.white,
         fontSize: 16.0);
   }

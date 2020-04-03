@@ -67,8 +67,7 @@ class _SignInState extends State<SignIn> {
                                   TextStyle(fontSize: 15, color: Colors.white),
                               onPressed: () async {
                                 setState(() => loading = true);
-                                dynamic result =
-                                    await _auth.signInWithFacebook();
+                                dynamic result = await _auth.signInWithFacebook();
                                 if (result == null) {
                                   toastMessage(
                                       'There was a problem trying to login with Facebook');
@@ -76,7 +75,7 @@ class _SignInState extends State<SignIn> {
                                 }
                               },
                             ),
-                            SizedBox(height: 20.0),
+                            SizedBox(height: 10.0),
                             RaisedButton(
                               color: Colors.pink,
                               shape: RoundedRectangleBorder(

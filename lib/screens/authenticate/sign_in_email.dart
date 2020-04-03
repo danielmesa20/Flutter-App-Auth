@@ -12,31 +12,34 @@ class SignInWithEmail extends StatefulWidget {
 }
 
 class _SignInWithEmailState extends State<SignInWithEmail> {
+
+  //Variables
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  bool loading = false;
+  String email = '';
+  String password = '';
+
   @override
   Widget build(BuildContext context) {
-    //Variables
-    final AuthService _auth = AuthService();
-    final _formKey = GlobalKey<FormState>();
-    bool loading = false;
-    String email = '';
-    String password = '';
-
+  
     return loading
         ? Loading()
         : Scaffold(
             backgroundColor: Colors.brown[100],
+            resizeToAvoidBottomInset: false,
             body: Center(
               heightFactor: 2.0,
               child: Container(
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[              
+                        children: <Widget>[
+                          SizedBox(height: 20.0), 
                           Text(
                             "SIGN IN WITH EMAIL",
                             textAlign: TextAlign.center,
@@ -48,9 +51,10 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
+                            enableSuggestions: true,                         
+                            keyboardType: TextInputType.emailAddress,
                             decoration:
                                 textInputDecoration.copyWith(hintText: 'Email'),
-                            keyboardType: TextInputType.emailAddress,
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter an email';
@@ -64,6 +68,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
+                            enableSuggestions: true,        
                             decoration: textInputDecoration.copyWith(
                                 hintText: 'Password'),
                             obscureText: true,
@@ -101,7 +106,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                             },
                           ),
                           RaisedButton(
-                            color: Colors.pink,
+                            color: Colors.blue,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
                             ),
@@ -112,13 +117,33 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                             onPressed: () => widget.toggleView(2),
                           ),
                           RaisedButton(
-                            color: Colors.pink,
+                            color: Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
+                            ),
+                            child: Text(
+                              "Reset password",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              if(email.isEmpty){
+                                toastMessage('Please supply your email');
+                              }else{
+                                setState(() => loading = true);
+                                await _auth.resetPassword(email);
+                                setState(() => loading = false);
+                                toastMessage('Please check your email');
+                              }
+                            },
+                          ),
+                          RaisedButton(
+                            color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(8.0),
                             ),
                             child: Text(
                               "Sign with others methods",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.black),
                             ),
                             onPressed: () => widget.toggleView(0),
                           ),

@@ -1,10 +1,12 @@
 import 'package:brew_crew/services/auth.dart';
+import 'package:brew_crew/shared/CustomButton.dart';
 import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 class SignIn extends StatefulWidget {
+  //Change sceene
   final Function toggleView;
   SignIn({this.toggleView});
 
@@ -26,8 +28,10 @@ class _SignInState extends State<SignIn> {
             body: Center(
               child: Container(
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20.0,
+                    horizontal: 50.0,
+                  ),
                   child: Form(
                       key: _formKey,
                       child: SingleChildScrollView(
@@ -47,8 +51,10 @@ class _SignInState extends State<SignIn> {
                             GoogleSignInButton(
                               darkMode: false, // default: false
                               borderRadius: 8.0,
-                              textStyle: TextStyle(fontSize: 15),
-                              text: "Sign in with Google",                            
+                              textStyle: TextStyle(
+                                fontSize: 15,
+                              ),
+                              text: "Sign in with Google",
                               onPressed: () async {
                                 setState(() => loading = true);
                                 dynamic result = await _auth.signInWithGoogle();
@@ -63,11 +69,14 @@ class _SignInState extends State<SignIn> {
                             FacebookSignInButton(
                               borderRadius: 8.0,
                               text: 'Sign in with Facebook',
-                              textStyle:
-                                  TextStyle(fontSize: 15, color: Colors.white),
+                              textStyle: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
                               onPressed: () async {
                                 setState(() => loading = true);
-                                dynamic result = await _auth.signInWithFacebook();
+                                dynamic result =
+                                    await _auth.signInWithFacebook();
                                 if (result == null) {
                                   toastMessage(
                                       'There was a problem trying to login with Facebook');
@@ -76,23 +85,20 @@ class _SignInState extends State<SignIn> {
                               },
                             ),
                             SizedBox(height: 10.0),
-                            RaisedButton(
-                              color: Colors.pink,
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(8.0),
-                              ),
-                              child: Text(
-                                "Sign in with email and password",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onPressed: () =>widget.toggleView(1),
+                            CustomButton(
+                              backgroundColor: Colors.pink,
+                              text: "Sign in with email and password",
+                              textColor: Colors.white,
+                              actionOnpressed: () => widget.toggleView(1),
                             ),
                             SizedBox(height: 10.0),
                             FlatButton.icon(
                               shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(8.0),
-                                  side: BorderSide(color: Colors.white)),
+                                borderRadius: new BorderRadius.circular(8.0),
+                                side: BorderSide(
+                                  color: Colors.white,
+                                ),
+                              ),
                               icon: Icon(Icons.account_circle),
                               color: Colors.white,
                               label: Text("Sign in Anonymous"),

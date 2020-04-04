@@ -1,4 +1,5 @@
 import 'package:brew_crew/services/auth.dart';
+import 'package:brew_crew/shared/CustomButton.dart';
 import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final focus = FocusNode();
-  bool loading = false;
+  bool loading = false, obscureTextState = true;
   String email = '';
   String password = '';
 
@@ -32,7 +33,10 @@ class _RegisterState extends State<Register> {
             body: Center(
               child: Container(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20.0,
+                    horizontal: 50.0,
+                  ),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
@@ -44,18 +48,42 @@ class _RegisterState extends State<Register> {
                             "Register",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 40.0,
-                                fontFamily: 'Prima',
-                                letterSpacing: 1.5),
+                              fontSize: 40.0,
+                              fontFamily: 'Prima',
+                              letterSpacing: 1.5,
+                            ),
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            keyboardType: TextInputType.emailAddress,                
-                            textAlignVertical: TextAlignVertical.bottom, 
-                            textInputAction: TextInputAction.next, 
-                            enableSuggestions: true,  
-                            decoration:
-                                textInputDecoration.copyWith(hintText: 'Enter Your Email Here', prefixIcon: Icon(Icons.alternate_email, color: Colors.black,)),
+                            enableSuggestions: true,
+                            keyboardType: TextInputType.emailAddress,
+                            textAlignVertical: TextAlignVertical.bottom,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Colors.black,
+                                size: 20.0,
+                              ),
+                              hintText: 'Enter Your Email Here',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              fillColor: Color.fromRGBO(128, 172, 164, 0),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.brown,
+                                  width: 2.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.pink,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter an email';
@@ -66,14 +94,50 @@ class _RegisterState extends State<Register> {
                               }
                             },
                             onChanged: (val) => setState(() => email = val),
-                            onFieldSubmitted: (v) => FocusScope.of(context).requestFocus(focus),
+                            onFieldSubmitted: (v) =>
+                                FocusScope.of(context).requestFocus(focus),
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
                             enableSuggestions: true,
-                            textAlignVertical: TextAlignVertical.bottom,  
-                            focusNode: focus,                
-                            decoration: textInputDecoration.copyWith(hintText: 'Enter Your Password Here', prefixIcon: Icon(Icons.security, color: Colors.black,)),
+                            focusNode: focus,
+                            textAlignVertical: TextAlignVertical.bottom,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.security,
+                                color: Colors.black,
+                                size: 20.0,
+                              ),
+                              hintText: 'Enter Your Password Here',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              fillColor: Color.fromRGBO(128, 172, 164, 0),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.brown,
+                                  width: 2.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.pink,
+                                  width: 2.0,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscureTextState == true
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () => setState(
+                                    () => obscureTextState = !obscureTextState),
+                              ),
+                            ),
+                            obscureText: obscureTextState,
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter a password';
@@ -83,21 +147,14 @@ class _RegisterState extends State<Register> {
                                 return null;
                               }
                             },
-                            obscureText: true,
                             onChanged: (val) => setState(() => password = val),
                           ),
                           SizedBox(height: 20.0),
-                          RaisedButton(
-                            color: Colors.pink,
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Enter",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () async {
+                          CustomButton(
+                            backgroundColor: Colors.pink,
+                            text: "Enter",
+                            textColor: Colors.white,
+                            actionOnpressed: () async {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
                                 dynamic result =
@@ -112,30 +169,18 @@ class _RegisterState extends State<Register> {
                             },
                           ),
                           SizedBox(height: 5.0),
-                          RaisedButton(
-                            elevation: 0.0,
-                            color: Colors.blue,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Go to sign In with email and password",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () => widget.toggleView(1),
+                          CustomButton(
+                            backgroundColor: Colors.blue,
+                            text: "Go to sign In with email and password",
+                            textColor: Colors.white,
+                            actionOnpressed: () => widget.toggleView(1),
                           ),
                           SizedBox(height: 5.0),
-                          RaisedButton(
-                            elevation: 0.0,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Go to sign In with other methods",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onPressed: () => widget.toggleView(0),
+                          CustomButton(
+                            backgroundColor: Colors.white,
+                            text: "Go to sign In with other methods",
+                            textColor: Colors.black,
+                            actionOnpressed: () => widget.toggleView(0),
                           ),
                         ],
                       ),

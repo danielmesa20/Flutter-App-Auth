@@ -1,4 +1,5 @@
 import 'package:brew_crew/services/auth.dart';
+import 'package:brew_crew/shared/CustomButton.dart';
 import 'package:brew_crew/shared/constants.dart';
 import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,10 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   final focus = FocusNode();
-  bool loading = false;
+  bool loading = false, obscureTextState = true;
   String email = '';
   String password = '';
+  
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +57,31 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                             keyboardType: TextInputType.emailAddress,
                             textAlignVertical: TextAlignVertical.bottom,
                             textInputAction: TextInputAction.next,
-                            decoration: textInputDecoration.copyWith(
-                                hintText: 'Enter Your Email Here',
-                                prefixIcon: Icon(Icons.alternate_email,
-                                    color: Colors.black)),
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.email,
+                                color: Colors.black,
+                                size: 20.0,
+                              ),
+                              hintText: 'Enter Your Email Here',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              fillColor: Color.fromRGBO(128, 172, 164, 0),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.brown,
+                                  width: 2.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.pink,
+                                  width: 2.0,
+                                ),
+                              ),
+                            ),
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter an email';
@@ -68,21 +91,54 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                                 return null;
                               }
                             },
+                            onTap: () {
+                              
+                            },
                             onChanged: (val) => setState(() => email = val),
-                            onFieldSubmitted: (v) => FocusScope.of(context).requestFocus(focus),
+                            onFieldSubmitted: (v) =>
+                                FocusScope.of(context).requestFocus(focus),
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
                             enableSuggestions: true,
                             focusNode: focus,
                             textAlignVertical: TextAlignVertical.bottom,
-                            decoration: textInputDecoration.copyWith(
-                                hintText: 'Enter Your Password Here',
-                                prefixIcon: Icon(
-                                  Icons.security,
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.security,
+                                color: Colors.black,
+                                size: 20.0,
+                              ),
+                              hintText: 'Enter Your Password Here',
+                              hintStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                              fillColor: Color.fromRGBO(128, 172, 164, 0),
+                              filled: true,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.brown,
+                                  width: 2.0,
+                                ),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.pink,
+                                  width: 2.0,
+                                ),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscureTextState == true
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                   color: Colors.black,
-                                )),
-                            obscureText: true,
+                                ),
+                                onPressed: () => setState(
+                                    () => obscureTextState = !obscureTextState),
+                              ),
+                            ),
+                            obscureText: obscureTextState,
                             validator: (val) {
                               if (val.isEmpty) {
                                 return 'Enter an password';
@@ -93,17 +149,11 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                             onChanged: (val) => setState(() => password = val),
                           ),
                           SizedBox(height: 20.0),
-                          RaisedButton(
-                            color: Colors.pink,
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Enter",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () async {
+                          CustomButton(
+                            backgroundColor: Colors.pink,
+                            text: "Enter",
+                            textColor: Colors.white,
+                            actionOnpressed: () async {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
                                 dynamic result =
@@ -117,29 +167,17 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                               }
                             },
                           ),
-                          RaisedButton(
-                            color: Colors.blue,
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Go to Register",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () => widget.toggleView(2),
+                          CustomButton(
+                            backgroundColor: Colors.blue,
+                            text: "Go to Register",
+                            textColor: Colors.white,
+                            actionOnpressed: () => widget.toggleView(2),
                           ),
-                          RaisedButton(
-                            color: Colors.grey,
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Reset password",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () async {
+                          CustomButton(
+                            backgroundColor: Colors.grey,
+                            text: "Reset password",
+                            textColor: Colors.white,
+                            actionOnpressed: () async {
                               if (email.isEmpty) {
                                 toastMessage('Please supply your email');
                               } else {
@@ -150,17 +188,11 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                               }
                             },
                           ),
-                          RaisedButton(
-                            color: Colors.white,
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                            ),
-                            child: Text(
-                              "Sign with others methods",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onPressed: () => widget.toggleView(0),
+                          CustomButton(
+                            backgroundColor: Colors.white,
+                            text: "Sign with others methods",
+                            textColor: Colors.black,
+                            actionOnpressed: () => widget.toggleView(0),
                           ),
                         ],
                       ),

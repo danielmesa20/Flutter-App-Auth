@@ -24,7 +24,6 @@ class AuthService {
 
   // _auth change user
   Stream<User> get user {
-    print("what");
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
   }
 
@@ -57,7 +56,9 @@ class AuthService {
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+        email: email,
+        password: password,
+      );
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -75,12 +76,14 @@ class AuthService {
   Future signInWithGoogle() async {
     try {
       final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication googleAuth =  await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.getCredential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
+      final FirebaseUser user =
+          (await _auth.signInWithCredential(credential)).user;
       return _userFromFirebaseUser(user);
     } catch (e) {
       print('Error SignIn with Google: ${e.message.toString()}');
@@ -96,7 +99,8 @@ class AuthService {
       switch (result.status) {
         case FacebookLoginStatus.loggedIn:
           final AuthCredential credential = FacebookAuthProvider.getCredential(
-              accessToken: result.accessToken.token);
+            accessToken: result.accessToken.token,
+          );
           final FirebaseUser user =
               (await _auth.signInWithCredential(credential)).user;
           return _userFromFirebaseUser(user);

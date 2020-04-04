@@ -5,7 +5,9 @@ import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class SignInWithEmail extends StatefulWidget {
+  //Variables
   final Function toggleView;
+  //Constructor
   SignInWithEmail({this.toggleView});
 
   @override
@@ -90,9 +92,6 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                               } else {
                                 return null;
                               }
-                            },
-                            onTap: () {
-                              
                             },
                             onChanged: (val) => setState(() => email = val),
                             onFieldSubmitted: (v) =>
